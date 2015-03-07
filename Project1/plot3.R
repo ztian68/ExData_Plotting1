@@ -1,0 +1,10 @@
+library(sqldf)
+data <- read.csv.sql("household_power_consumption.txt", header=TRUE,sql = 'select * from file where Date == "1/2/2007" or Date == "2/2/2007"', sep=";")
+data$Date <- as.Date(data$Date, "%d/%m/%Y")
+data$DateTime <- paste(data$Date, data$Time)
+data$DateTime <- as.POSIXct(data$DateTime, format = "%Y-%m-%d %H:%M:%S")
+plot( data$DateTime, data$Sub_metering_1, xlab="", ylab = "Energy sub metering", type="l")
+lines(data$DateTime, data$Sub_metering_2, col="red")
+lines(data$DateTime, data$Sub_metering_3, col="blue")
+legend("topright", c("Sub_metering_1","Sub_metering_2","Sub_metering_3"), lty=1, col=c("black","red","blue"))
+
